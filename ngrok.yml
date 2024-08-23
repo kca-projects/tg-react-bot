@@ -1,0 +1,12 @@
+version: 2
+authtoken: 6105978175:AAHwUfLm4HlV0iTt2yKRKomzV0Hhwjf1sW4
+tunnels:
+    api:
+        proto: http
+        addr: 8000
+    web:
+        proto: http
+        addr: 8001
+    server1:
+        proto: http
+        addr: 9999
