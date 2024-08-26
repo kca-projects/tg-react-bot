@@ -31,12 +31,32 @@ declare global {
 }
 
 const tele: any = window.Telegram.WebApp;
+const allowedPublicIP = "96.9.70.228";
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     tele.ready();
+
+    const checkUserIP = async () => {
+      try {
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+        const userPublicIP = data.ip;
+
+        if (userPublicIP !== allowedPublicIP) {
+          document.body.innerHTML = "<h1>Access Denied: You must be connected to the abc-wifi network.</h1>";
+        } else {
+          window.Telegram.WebApp.ready();
+        }
+      } catch (error) {
+        console.error("Error fetching public IP:", error);
+        document.body.innerHTML = "<h1>Internal Server Error</h1>";
+      }
+    };
+
+    checkUserIP();
   }, []);
 
   const onAdd = (food: Food) => {
