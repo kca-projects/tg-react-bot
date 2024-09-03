@@ -2,7 +2,7 @@ import React from "react";
 import "./Button.css";
 
 interface ButtonProps {
-  type: "add" | "remove" | "checkout"; // Restricting type to specific strings
+  type: "add" | "remove" | "checkout" | "pay"; // Restricting type to specific strings
   title: string;
   disable?: boolean;
   onClick: () => void;

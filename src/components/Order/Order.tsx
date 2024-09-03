@@ -1,58 +1,30 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../Card/Card";
 import Cart from "../Cart/Cart";
+import { CartItem, Food } from "../../types/types";
 import { getData } from "../../db/db";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const foods = getData();
 
-interface Food {
-  id: string | number;
-  title: string;
-  Image: string;
-  price: number;
+interface OrderProps {
+  cartItems: CartItem[];
+  onAdd: (food: Food) => void;
+  onRemove: (food: Food) => void;
 }
 
-interface CartItem extends Food {
-  quantity: number;
-}
-const Order = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+const Order: React.FC<OrderProps> = ({ cartItems, onAdd, onRemove }) => {
   const navigate = useNavigate();
   const tele: any = window.Telegram.WebApp;
-  
-  const onAdd = (food: Food) => {
-    const exist = cartItems.find((x) => x.id === food.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === food.id ? { ...exist, quantity: exist.quantity + 1 } : x
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...food, quantity: 1 }]);
-    }
-  };
 
-  const onRemove = (food: Food) => {
-    const exist = cartItems.find((x) => x.id === food.id);
-    if (exist && exist.quantity === 1) {
-      setCartItems(cartItems.filter((x) => x.id !== food.id));
-    } else if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === food.id ? { ...exist, quantity: exist.quantity - 1 } : x
-        )
-      );
-    }
-  };
 
   const onCheckout = () => {
-    tele.MainButton.text = "Pay";
+    tele.MainButton.text = "View Order";
     tele.MainButton.show();
-
-    navigate("/pay");
+    navigate("/view-order");
   };
+
   return (
     <>
       <h1 className="heading">Order Food</h1>
