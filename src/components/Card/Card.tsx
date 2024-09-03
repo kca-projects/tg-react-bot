@@ -31,7 +31,9 @@ const Card: React.FC<CardProps> = ({ food, onAdd, onRemove }) => {
 
   return (
     <div className="card">
-      <span className={`${count !== 0 ? "card__badge" : "card__badge--hidden"}`}>
+      <span
+        className={`${count !== 0 ? "card__badge" : "card__badge--hidden"}`}
+      >
         {count}
       </span>
       <div className="image__container">
@@ -42,10 +44,14 @@ const Card: React.FC<CardProps> = ({ food, onAdd, onRemove }) => {
       </h4>
 
       <div className="btn-container">
-        <Button title={"+"} type={"add"} onClick={handleIncrement} />
         {count !== 0 ? (
           <Button title={"-"} type={"remove"} onClick={handleDecrement} />
         ) : null}
+        {count === 0 ? (
+          <Button title={"Add"} type={"add"} onClick={handleIncrement} />
+        ) : (
+          <Button title={"+"} type={"add"} onClick={handleIncrement} />
+        )}
       </div>
     </div>
   );

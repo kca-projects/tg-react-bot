@@ -1,20 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./App.css";
-import Card from "./components/Card/Card";
-import Cart from "./components/Cart/Cart";
-import { getData } from "./db/db";
-const foods = getData();
-
-interface Food {
-  id: string | number;
-  title: string;
-  Image: string;
-  price: number;
-}
-
-interface CartItem extends Food {
-  quantity: number;
-}
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+} from "react-router-dom";
+import Order from "./components/Order/Order";
+import Payment from "./components/Payment/Payment";
 
 declare global {
   interface Window {
@@ -31,11 +23,9 @@ declare global {
 }
 
 const tele: any = window.Telegram.WebApp;
-const allowedPublicIP = "96.9.70.228";
+const allowedPublicIP = "58.97.224.58";
 
 function App() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
   useEffect(() => {
     tele.ready();
 
@@ -46,7 +36,8 @@ function App() {
         const userPublicIP = data.ip;
 
         if (userPublicIP !== allowedPublicIP) {
-          document.body.innerHTML = "<h1>Access Denied: You must be connected to the abc-wifi network.</h1>";
+          document.body.innerHTML =
+            "<h1>Access Denied: You must be connected to the abc-wifi network.</h1>";
         } else {
           window.Telegram.WebApp.ready();
         }
@@ -59,47 +50,13 @@ function App() {
     checkUserIP();
   }, []);
 
-  const onAdd = (food: Food) => {
-    const exist = cartItems.find((x) => x.id === food.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === food.id ? { ...exist, quantity: exist.quantity + 1 } : x
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...food, quantity: 1 }]);
-    }
-  };
-
-  const onRemove = (food: Food) => {
-    const exist = cartItems.find((x) => x.id === food.id);
-    if (exist && exist.quantity === 1) {
-      setCartItems(cartItems.filter((x) => x.id !== food.id));
-    } else if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x.id === food.id ? { ...exist, quantity: exist.quantity - 1 } : x
-        )
-      );
-    }
-  };
-
-  const onCheckout = () => {
-    tele.MainButton.text = "Pay :)";
-    tele.MainButton.show();
-  };
-
   return (
-    <>
-      <h1 className="heading">Order Food</h1>
-      <Cart cartItems={cartItems} onCheckout={onCheckout} />
-      <div className="cards__container">
-        {foods.map((food: Food) => (
-          <Card food={food} key={food.id} onAdd={onAdd} onRemove={onRemove} />
-        ))}
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Order />} />
+        <Route path="/pay" element={<Payment />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
