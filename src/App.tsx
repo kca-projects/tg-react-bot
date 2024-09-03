@@ -23,7 +23,7 @@ declare global {
 }
 
 const tele: any = window.Telegram.WebApp;
-const allowedPublicIP = "58.97.224.58";
+const allowedPublicIP = "43.230.193.188";
 
 function App() {
   useEffect(() => {
