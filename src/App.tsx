@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React,{useEffect} from "react";
 import "./App.css";
 import {
   BrowserRouter,
@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Order from "./components/Order/Order";
 import ViewOrder from "./components/ViewOrder/ViewOrder";
+import PaymentMethod from "./components/PaymentMethod/PaymentMethod";
 import { CartItem, Food } from "./types/types";
 
 declare global {
@@ -24,7 +25,7 @@ declare global {
 }
 
 const tele: any = window.Telegram.WebApp;
-const allowedPublicIP = "43.230.193.188";
+const allowedPublicIP = "36.37.168.16";
 
 function App() {
   useEffect(() => {
@@ -95,6 +96,12 @@ function App() {
               onAdd={onAdd}
               onRemove={onRemove}
             />
+          }
+        />
+        <Route
+          path="/payment-method"
+          element={
+            <PaymentMethod cartItems={cartItems}/>
           }
         />
       </Routes>
