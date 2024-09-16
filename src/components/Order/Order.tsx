@@ -19,10 +19,27 @@ const Order: React.FC<OrderProps> = ({ cartItems, onAdd, onRemove }) => {
   const tele: any = window.Telegram.WebApp;
 
 
-  const onCheckout = () => {
+  if (cartItems.length > 0) {
     tele.MainButton.text = "View Order";
     tele.MainButton.show();
-    navigate("/view-order");
+    tele.MainButton.style = {
+    backgroundColor: '#1b19bd',  
+    color: '#fff',               
+    fontSize: '16px',            
+    borderRadius: '5px',         
+    padding: '10px 20px'
+  };
+    tele.MainButton.onClick(() => {
+      navigate("/view-order");
+    });
+    
+  }else{
+    tele.MainButton.hide();
+  }
+
+
+  const onCheckout = () => {
+    navigate("/");
   };
 
   return (
